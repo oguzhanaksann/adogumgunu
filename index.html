@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>AYBÜKE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
+   <style>
     body {
       margin: 0;
       background: #0b0c2a;
@@ -14,6 +14,30 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+    }
+
+    .hilal {
+      position: absolute;
+      width: 6vmin;
+      height: 6vmin;
+      background-image: url('https://emojicdn.elk.sh/🌙'); /* EmojiCDN'den moon emoji */
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      animation: float 5s infinite ease-in-out, sway 3s infinite ease-in-out;
+      filter: drop-shadow(0 0 8px white);
+      opacity: 0.8;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-2vmin) rotate(5deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    @keyframes sway {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(1vmin); }
     }
 
     .center-text {
@@ -33,6 +57,10 @@
     @keyframes glow {
       from { text-shadow: 0 0 15px #fff, 0 0 30px #0ff; }
       to { text-shadow: 0 0 35px #fff, 0 0 60px #0ff; }
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -73,6 +101,15 @@
       shapes: ['star'],
       colors: ['#00ffff', '#ffffff', '#ff69b4']
     });
+   }
+
+  for (let i = 0; i < 100; i++) {
+    const hilal = document.createElement('div');
+    hilal.classList.add('hilal');
+    hilal.style.top = `${Math.random() * 90}vh`;
+    hilal.style.left = `${Math.random() * 90}vw`;
+    hilal.style.animationDelay = `${Math.random() * 5}s`;
+    document.body.appendChild(hilal);
   }
 </script>
 
