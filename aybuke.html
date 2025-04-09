@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Hilal Yağmuru</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      background: #0b0c2a;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .hilal {
+      position: absolute;
+      width: 6vmin;
+      height: 6vmin;
+      background-image: url('https://emojicdn.elk.sh/🌙'); /* EmojiCDN'den moon emoji */
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      animation: float 5s infinite ease-in-out, sway 3s infinite ease-in-out;
+      filter: drop-shadow(0 0 8px white);
+      opacity: 0.8;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-2vmin) rotate(5deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    @keyframes sway {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(1vmin); }
+    }
+
+    .center-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 8vmin;
+      text-align: center;
+      text-shadow: 0 0 20px #fff, 0 0 40px #0ff;
+      animation: glow 3s ease-in-out infinite alternate;
+      z-index: 999;
+      cursor: pointer;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 15px #fff, 0 0 30px #0ff; }
+      to { text-shadow: 0 0 35px #fff, 0 0 60px #0ff; }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+
+<!-- Doğum Günü Mesajı -->
+<div class="center-text" onclick="startExperience()">DOĞUM GÜNÜN KUTLU OLSUN AYBÜKE</div>
+
+<!-- Konfeti Kütüphanesi -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<!-- YouTube Video Gömme -->
+<iframe id="youtube-player" class="hidden" width="1" height="1" 
+  src="https://www.youtube.com/watch?v=GSeyly3KdU8&ab_channel=GENCERSAVASBANDOSU" 
+  frameborder="0" allow="autoplay" allowfullscreen></iframe>
+
+<script>
+var clickCount = 0;
+  function startExperience() {
+  if(clickCount < 1){
+  clickCount++;
+    var youtubePlayer = document.getElementById('youtube-player');
+
+    // YouTube API üzerinden müzik oynatma
+    youtubePlayer.classList.remove('hidden'); // Gömülü çalar görünür hale getirilir
+    youtubePlayer.src += "&autoplay=1"; // Müzik otomatik oynatılır
+
+  }
+    fireConfetti();
+  }
+
+  function fireConfetti() {
+    confetti({
+      particleCount: 200,
+      spread: 90,
+      origin: { y: 0.6 },
+      shapes: ['star'],
+      colors: ['#00ffff', '#ffffff', '#ff69b4']
+    });
+  }
+
+  for (let i = 0; i < 100; i++) {
+    const hilal = document.createElement('div');
+    hilal.classList.add('hilal');
+    hilal.style.top = `${Math.random() * 90}vh`;
+    hilal.style.left = `${Math.random() * 90}vw`;
+    hilal.style.animationDelay = `${Math.random() * 5}s`;
+    document.body.appendChild(hilal);
+  }
+</script>
+
+</body>
+</html>
