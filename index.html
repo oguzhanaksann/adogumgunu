@@ -70,11 +70,11 @@
 <div class="center-text" onclick="startExperience()">MUTLU YILLAR SENAAAAA</div>
 
 <!-- Konfeti Kütüphanesi -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tsparticles-preset-confetti/1.43.0/tsparticles.preset.confetti.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
 
 <!-- Müzik Dosyası -->
 <audio id="bg-music" preload="auto">
-  <source src="https://oguzhanaksann.github.io/adogumgunu/hb.mp3" type="audio/mpeg">
+  <source src="https://oguzhanaksann.github.io/adogumgunu/hbsena.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -102,6 +102,12 @@
       colors: ['#00ffff', '#ffffff', '#ff69b4']
     });
    }
+  
+  const jsConfetti = new JSConfetti();
+  jsConfetti.addConfetti({
+    emojis: ['✨', '🎉', '💫'],
+    confettiNumber: 100,
+  });
 
   for (let i = 0; i < 100; i++) {
     const hilal = document.createElement('div');
