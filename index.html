@@ -2,42 +2,23 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>AYBÜKE</title>
+  <title>SENAA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <style>
-    body {
+  <style>
+    html, body {
       margin: 0;
-      background: #0b0c2a;
+      padding: 0;
       overflow: hidden;
+      height: 100%;
+      background-color: #0b0c2a;
       font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
     }
 
-    .hilal {
-      position: absolute;
-      width: 6vmin;
-      height: 6vmin;
-      background-image: url('https://emojicdn.elk.sh/✨'); /* EmojiCDN'den moon emoji */
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      animation: float 5s infinite ease-in-out, sway 3s infinite ease-in-out;
-      filter: drop-shadow(0 0 8px white);
-      opacity: 0.8;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-2vmin) rotate(5deg); }
-      100% { transform: translateY(0) rotate(0deg); }
-    }
-
-    @keyframes sway {
-      0%, 100% { transform: translateX(0); }
-      50% { transform: translateX(1vmin); }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
     }
 
     .center-text {
@@ -50,7 +31,7 @@
       text-align: center;
       text-shadow: 0 0 20px #fff, 0 0 40px #0ff;
       animation: glow 3s ease-in-out infinite alternate;
-      z-index: 999;
+      z-index: 10;
       cursor: pointer;
     }
 
@@ -59,63 +40,116 @@
       to { text-shadow: 0 0 35px #fff, 0 0 60px #0ff; }
     }
 
-    .hidden {
-      display: none;
+    .sparkle {
+  position: absolute;
+  width: 3.5vmin; /* BÜYÜTÜLDÜ */
+  height: 3.5vmin; /* BÜYÜTÜLDÜ */
+  background-image: url('https://emojicdn.elk.sh/✨');
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: float 8s infinite ease-in-out, sway 6s infinite ease-in-out;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 5px #fff);
+  z-index: 1;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-3vmin); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes sway {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(1vmin); }
     }
   </style>
 </head>
 <body>
 
-<!-- Doğum Günü Mesajı -->
+<!-- Yazı -->
 <div class="center-text" onclick="startExperience()">MUTLU YILLAR SENAAAAA</div>
 
-<!-- Konfeti Kütüphanesi -->
-<script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
-
-<!-- Müzik Dosyası -->
+<!-- Müzik -->
 <audio id="bg-music" preload="auto">
   <source src="https://oguzhanaksann.github.io/adogumgunu/hbsena.mp3" type="audio/mpeg">
 </audio>
 
+<!-- JSConfetti -->
+<script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+
+<!-- Yıldız arka planı (canvas) -->
+<canvas id="star-canvas"></canvas>
+
 <script>
+  const canvas = document.getElementById('star-canvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    stars = [];
+    for (let i = 0; i < 150; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5,
+        speed: Math.random() * 0.5 + 0.2
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#ffffff";
+    stars.forEach(star => {
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.fill();
+      star.y += star.speed;
+      if (star.y > canvas.height) {
+        star.y = 0;
+        star.x = Math.random() * canvas.width;
+      }
+    });
+    requestAnimationFrame(drawStars);
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  drawStars();
+</script>
+
+<!-- Parıltı emojileri -->
+<script>
+  for (let i = 0; i < 50; i++) {
+    const sparkle = document.createElement('div');
+    sparkle.classList.add('sparkle');
+    sparkle.style.top = `${Math.random() * 100}vh`;
+    sparkle.style.left = `${Math.random() * 100}vw`;
+    sparkle.style.animationDelay = `${Math.random() * 10}s`;
+    document.body.appendChild(sparkle);
+  }
+</script>
+
+<!-- Etkileşim -->
+<script>
+  const jsConfetti = new JSConfetti();
   let isPlaying = false;
 
   function startExperience() {
     const music = document.getElementById('bg-music');
 
     if (!isPlaying) {
-      music.play().catch(error => {
-        console.log('Müzik otomatik oynatılamadı:', error);
-      });
+      music.play().catch(err => console.log("Müzik hatası:", err));
       isPlaying = true;
     }
 
-    fireConfetti();
-  }
-
-  function fireConfetti() {
-    confetti({
-      particleCount: 200,
-      spread: 90,
-      origin: { y: 0.6 },
-      shapes: ['star'],
-      colors: ['#00ffff', '#ffffff', '#ff69b4']
+    jsConfetti.addConfetti({
+      emojis: ['✨', '🎉', '💫', '🌟'],
+      confettiNumber: 60 // Daha az ve daha küçük hissettiren konfeti
     });
-   }
-  
-  const jsConfetti = new JSConfetti();
-  jsConfetti.addConfetti({
-    emojis: ['✨', '🎉', '💫'],
-    confettiNumber: 100,
-  });
-
-  for (let i = 0; i < 100; i++) {
-    const hilal = document.createElement('div');
-    hilal.classList.add('hilal');
-    hilal.style.top = `${Math.random() * 90}vh`;
-    hilal.style.left = `${Math.random() * 90}vw`;
-    hilal.style.animationDelay = `${Math.random() * 5}s`;
-    document.body.appendChild(hilal);
   }
 </script>
 
